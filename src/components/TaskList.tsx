@@ -1,16 +1,24 @@
+// TaskList.tsx
 import React from 'react';
-import { useSelector } from 'react-redux';
 import { Task } from '../redux/types';
 import TaskItem from './TaskItem';
 
-const TaskList: React.FC = () => {
-    const tasks = useSelector((state: any) => state.tasks);
+interface TaskListProps {
+    tasks: Task[];
+    onEdit: (task: Task) => void;
+    onDelete: (taskId: number) => void;
+}
 
+const TaskList: React.FC<TaskListProps> = ({ tasks, onEdit, onDelete }) => {
     return (
-        <div>
-            {tasks.map((task: Task) => (
-                <TaskItem key={task.id} task={task} />
-            ))}
+        <div className="task-list">
+            {tasks.length === 0 ? (
+                <p>No tasks available. Add a new task!</p>
+            ) : (
+                tasks.map((task) => (
+                    <TaskItem key={task.id} task={task} onEdit={onEdit} onDelete={onDelete} />
+                ))
+            )}
         </div>
     );
 };
